@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SastaKhojo — Price Comparison</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">💰</div>
+    Sasta<span>Khojo</span>
+  </div>
+  <nav class="nav-links">
+    <a href="#">Home</a>
+    <a href="#">Trending</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">✦ Live Price Comparison — Amazon · Flipkart · Meesho</div>
+  <h1>Ek search mein<br><em>sabse sasta price</em> dhundo</h1>
+  <p>Teeno platforms compare karo — sabse sasta option hamesha upar dikhega!</p>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="kya dhundhna hai? jaise: chasma, earphones, shirt..." autocomplete="off" />
+      <button class="search-btn" id="searchBtn" onclick="doSearch()">
+        🔍 Search
+      </button>
+    </div>
+    <div class="popular">
+      <span>Popular:</span>
+      <div class="tag" onclick="quickSearch('chasma')">👓 Chasma</div>
+      <div class="tag" onclick="quickSearch('earphones')">🎧 Earphones</div>
+      <div class="tag" onclick="quickSearch('shirt')">👕 Shirt</div>
+      <div class="tag" onclick="quickSearch('mixer grinder')">🍹 Mixer Grinder</div>
+      <div class="tag" onclick="quickSearch('running shoes')">👟 Running Shoes</div>
+      <div class="tag" onclick="quickSearch('phone cover')">📱 Phone Cover</div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- Filter Buttons -->
+  <div class="filter-row" id="filterRow" style="display:none;">
+    <span class="filter-label">Budget:</span>
+    <button class="filter-btn active" onclick="applyFilter(this, '')">Sab</button>
+    <button class="filter-btn" onclick="applyFilter(this, 500)">₹500 se kam</button>
+    <button class="filter-btn" onclick="applyFilter(this, 1000)">₹1000 se kam</button>
+    <button class="filter-btn" onclick="applyFilter(this, 2000)">₹2000 se kam</button>
+    <button class="filter-btn" onclick="applyFilter(this, 5000)">₹5000 se kam</button>
+  </div>
+
+  <!-- Results count + sort info -->
+  <div class="results-meta" id="resultsMeta" style="display:none;">
+    <div class="results-count" id="resultsCount"></div>
+    <div class="sort-info">↑ Saste se mehnge</div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Amazon, Flipkart, Meesho par prices dhundh raha hu...</p>
+  </div>
+
+  <!-- Results List -->
+  <div id="resultsList"></div>
+
+  <!-- Savings Card -->
+  <div class="savings-card" id="savingsCard" style="display:none;">
+    <span class="savings-icon">💰</span>
+    <div class="savings-text" id="savingsText"></div>
+  </div>
+
+  <!-- Welcome State -->
+  <div class="welcome" id="welcomeState">
+    <p style="color:#64748b; font-size:0.875rem; margin-bottom:1.5rem;">Kuch popular products dekhein:</p>
+    <div class="welcome-grid">
+      <div class="welcome-card" onclick="quickSearch('chasma')"><div class="welcome-card-icon">👓</div><h4>Chasma</h4><p>₹179 se shuru</p></div>
+      <div class="welcome-card" onclick="quickSearch('earphones')"><div class="welcome-card-icon">🎧</div><h4>Earphones</h4><p>₹249 se shuru</p></div>
+      <div class="welcome-card" onclick="quickSearch('shirt')"><div class="welcome-card-icon">👕</div><h4>Shirt</h4><p>₹249 se shuru</p></div>
+      <div class="welcome-card" onclick="quickSearch('running shoes')"><div class="welcome-card-icon">👟</div><h4>Running Shoes</h4><p>₹399 se shuru</p></div>
+      <div class="welcome-card" onclick="quickSearch('mixer grinder')"><div class="welcome-card-icon">🍹</div><h4>Mixer Grinder</h4><p>₹999 se shuru</p></div>
+      <div class="welcome-card" onclick="quickSearch('phone cover')"><div class="welcome-card-icon">📱</div><h4>Phone Cover</h4><p>₹79 se shuru</p></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <strong>SastaKhojo</strong> — Price Comparison Portal &nbsp;|&nbsp;
+  College Project &nbsp;|&nbsp;
+  Stack: HTML · CSS · JavaScript · Node.js · Express · MongoDB
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
