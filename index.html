@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="hi" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,12 +18,16 @@
     Sasta<span>Khojo</span>
   </div>
   <nav class="nav-links">
-    <a href="#">Home</a>
-    <a href="#">Trending</a>
-    <a href="#">About</a>
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('wishlist')">❤️ Wishlist <span class="wishlist-count" id="wishlistCount">0</span></a>
+    <a href="#" onclick="showPage('deals')">🔥 Top Deals</a>
+    <a href="#" onclick="showPage('history')">🕐 History</a>
   </nav>
+  <button class="dark-toggle" onclick="toggleDark()" title="Dark Mode">🌙</button>
 </header>
 
+<!-- HOME PAGE -->
+<div id="page-home">
 <section class="hero">
   <div class="hero-badge">✦ Live Price Comparison — Amazon · Flipkart · Meesho</div>
   <h1>Ek search mein<br><em>sabse sasta price</em> dhundo</h1>
@@ -31,9 +36,7 @@
   <div class="search-wrap">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="kya dhundhna hai? jaise: chasma, earphones, shirt..." autocomplete="off" />
-      <button class="search-btn" id="searchBtn" onclick="doSearch()">
-        🔍 Search
-      </button>
+      <button class="search-btn" id="searchBtn" onclick="doSearch()">🔍 Search</button>
     </div>
     <div class="popular">
       <span>Popular:</span>
@@ -42,13 +45,14 @@
       <div class="tag" onclick="quickSearch('shirt')">👕 Shirt</div>
       <div class="tag" onclick="quickSearch('mixer grinder')">🍹 Mixer Grinder</div>
       <div class="tag" onclick="quickSearch('running shoes')">👟 Running Shoes</div>
-      <div class="tag" onclick="quickSearch('phone cover')">📱 Phone Cover</div>
+      <div class="tag" onclick="quickSearch('mobile')">📱 Mobile</div>
+      <div class="tag" onclick="quickSearch('laptop')">💻 Laptop</div>
+      <div class="tag" onclick="quickSearch('watch')">⌚ Watch</div>
     </div>
   </div>
 </section>
 
 <main>
-  <!-- Filter Buttons -->
   <div class="filter-row" id="filterRow" style="display:none;">
     <span class="filter-label">Budget:</span>
     <button class="filter-btn active" onclick="applyFilter(this, '')">Sab</button>
@@ -58,45 +62,102 @@
     <button class="filter-btn" onclick="applyFilter(this, 5000)">₹5000 se kam</button>
   </div>
 
-  <!-- Results count + sort info -->
   <div class="results-meta" id="resultsMeta" style="display:none;">
     <div class="results-count" id="resultsCount"></div>
     <div class="sort-info">↑ Saste se mehnge</div>
   </div>
 
-  <!-- Loading Spinner -->
   <div class="loading" id="loading">
     <div class="spinner"></div>
     <p>Amazon, Flipkart, Meesho par prices dhundh raha hu...</p>
   </div>
 
-  <!-- Results List -->
   <div id="resultsList"></div>
 
-  <!-- Savings Card -->
   <div class="savings-card" id="savingsCard" style="display:none;">
     <span class="savings-icon">💰</span>
     <div class="savings-text" id="savingsText"></div>
   </div>
 
-  <!-- Welcome State -->
+  <div class="share-bar" id="shareBar" style="display:none;">
+    <span>Results share karo:</span>
+    <button onclick="shareWhatsApp()" class="share-btn whatsapp-btn">📱 WhatsApp</button>
+    <button onclick="shareCopy()" class="share-btn copy-btn">🔗 Link Copy</button>
+  </div>
+
   <div class="welcome" id="welcomeState">
-    <p style="color:#64748b; font-size:0.875rem; margin-bottom:1.5rem;">Kuch popular products dekhein:</p>
+    <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem;">Kuch popular products dekhein:</p>
     <div class="welcome-grid">
       <div class="welcome-card" onclick="quickSearch('chasma')"><div class="welcome-card-icon">👓</div><h4>Chasma</h4><p>₹179 se shuru</p></div>
       <div class="welcome-card" onclick="quickSearch('earphones')"><div class="welcome-card-icon">🎧</div><h4>Earphones</h4><p>₹249 se shuru</p></div>
       <div class="welcome-card" onclick="quickSearch('shirt')"><div class="welcome-card-icon">👕</div><h4>Shirt</h4><p>₹249 se shuru</p></div>
       <div class="welcome-card" onclick="quickSearch('running shoes')"><div class="welcome-card-icon">👟</div><h4>Running Shoes</h4><p>₹399 se shuru</p></div>
-      <div class="welcome-card" onclick="quickSearch('mixer grinder')"><div class="welcome-card-icon">🍹</div><h4>Mixer Grinder</h4><p>₹999 se shuru</p></div>
-      <div class="welcome-card" onclick="quickSearch('phone cover')"><div class="welcome-card-icon">📱</div><h4>Phone Cover</h4><p>₹79 se shuru</p></div>
+      <div class="welcome-card" onclick="quickSearch('mobile')"><div class="welcome-card-icon">📱</div><h4>Mobile</h4><p>₹6799 se shuru</p></div>
+      <div class="welcome-card" onclick="quickSearch('laptop')"><div class="welcome-card-icon">💻</div><h4>Laptop</h4><p>₹38999 se shuru</p></div>
     </div>
   </div>
 </main>
+</div>
+
+<!-- WISHLIST PAGE -->
+<div id="page-wishlist" style="display:none;">
+  <div class="page-container">
+    <h2 class="page-title">❤️ Meri Wishlist</h2>
+    <p class="page-subtitle">Save kiye gaye products yahan milenge</p>
+    <div id="wishlistItems"></div>
+  </div>
+</div>
+
+<!-- TOP DEALS PAGE -->
+<div id="page-deals" style="display:none;">
+  <div class="page-container">
+    <h2 class="page-title">🔥 Top Deals Today</h2>
+    <p class="page-subtitle">Sabse zyada discount wale products</p>
+    <div id="dealsItems"></div>
+  </div>
+</div>
+
+<!-- SEARCH HISTORY PAGE -->
+<div id="page-history" style="display:none;">
+  <div class="page-container">
+    <h2 class="page-title">🕐 Search History</h2>
+    <p class="page-subtitle">Tumhari pichli searches</p>
+    <div id="historyItems"></div>
+  </div>
+</div>
+
+<!-- PRICE CHART MODAL -->
+<div class="modal-overlay" id="chartModal" onclick="closeChart()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 id="chartTitle">Price History</h3>
+      <button onclick="closeChart()" class="modal-close">✕</button>
+    </div>
+    <canvas id="priceChart" height="200"></canvas>
+    <p class="chart-note">📊 Pichle 7 din ka price trend</p>
+  </div>
+</div>
+
+<!-- PRICE ALERT MODAL -->
+<div class="modal-overlay" id="alertModal" onclick="closeAlert()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>🔔 Price Alert Set Karo</h3>
+      <button onclick="closeAlert()" class="modal-close">✕</button>
+    </div>
+    <p id="alertProductName" style="color:var(--text-muted);margin-bottom:1rem;"></p>
+    <label style="font-weight:600;">Target Price (₹):</label>
+    <input type="number" id="alertPrice" placeholder="jaise: 299" class="alert-input" />
+    <label style="font-weight:600;margin-top:1rem;display:block;">Tumhara Email:</label>
+    <input type="email" id="alertEmail" placeholder="email@example.com" class="alert-input" />
+    <button onclick="saveAlert()" class="alert-save-btn">🔔 Alert Set Karo</button>
+  </div>
+</div>
 
 <footer>
   <strong>SastaKhojo</strong> — Price Comparison Portal &nbsp;|&nbsp;
-  College Project &nbsp;|&nbsp;
-  Stack: HTML · CSS · JavaScript · Node.js · Express · MongoDB
+  MCA Final Sem Project &nbsp;|&nbsp;
+  Stack: HTML · CSS · JS · Node.js · Express · RapidAPI
 </footer>
 
 <script src="script.js"></script>
